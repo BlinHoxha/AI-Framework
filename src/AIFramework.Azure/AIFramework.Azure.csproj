@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../AIFramework.Core/AIFramework.Core.csproj" /><PackageReference Include="Azure.Identity" /><PackageReference Include="Microsoft.Extensions.Http" /><PackageReference Include="Microsoft.Extensions.Configuration.Binder" /></ItemGroup></Project>

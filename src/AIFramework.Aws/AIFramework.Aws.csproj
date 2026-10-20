@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../AIFramework.Core/AIFramework.Core.csproj" /><PackageReference Include="AWSSDK.BedrockRuntime" /><PackageReference Include="Microsoft.Extensions.DependencyInjection" /></ItemGroup></Project>

@@ -1,0 +1,23 @@
+name: AI libraries
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - run: dotnet restore AI-Framework.sln
+      - run: dotnet build AI-Framework.sln --no-restore -c Release
+      - run: dotnet test AI-Framework.sln --no-build --no-restore -c Release --logger trx
+      - run: dotnet run --project samples/AIFramework.LocalDemo --no-build --no-restore -c Release
+      - run: dotnet pack AI-Framework.sln --no-build --no-restore -c Release -o .artifacts/packages
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-libraries
+          path: |
+            .artifacts/packages/*.nupkg
+            tests/**/TestResults/*.trx

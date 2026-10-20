@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Optional model-scoped Bedrock invocation policy; attach to an application-owned workload role.
+Parameters:
+  ModelResourceArns:
+    Type: CommaDelimitedList
+    Description: Approved foundation-model and/or inference-profile ARNs required by the selected model.
+Resources:
+  BedrockInvokePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Invoke explicitly approved Bedrock models.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - bedrock:InvokeModel
+            Resource: !Ref ModelResourceArns
+Outputs:
+  PolicyArn:
+    Value: !Ref BedrockInvokePolicy

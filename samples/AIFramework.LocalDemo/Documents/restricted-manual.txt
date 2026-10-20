@@ -1,0 +1,3 @@
+Synthetic demonstration document for a different resource scope.
+Backup credentials for the restricted laboratory must be rotated every seven days.
+The laboratory access log is reviewed every morning.

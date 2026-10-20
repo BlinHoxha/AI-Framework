@@ -1,0 +1,26 @@
+{
+  "name": "knowledge-chunks",
+  "fields": [
+    { "name": "id", "type": "Edm.String", "key": true, "filterable": true },
+    { "name": "documentId", "type": "Edm.String", "filterable": true },
+    { "name": "chunkNumber", "type": "Edm.Int32", "filterable": true, "sortable": true },
+    { "name": "title", "type": "Edm.String", "searchable": true },
+    { "name": "content", "type": "Edm.String", "searchable": true },
+    { "name": "profile", "type": "Edm.String", "filterable": true },
+    { "name": "tenantId", "type": "Edm.String", "filterable": true },
+    { "name": "scopeId", "type": "Edm.String", "filterable": true },
+    { "name": "language", "type": "Edm.String", "filterable": true },
+    { "name": "sourceUri", "type": "Edm.String" },
+    {
+      "name": "vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "dimensions": 1536,
+      "vectorSearchProfile": "knowledge-vector"
+    }
+  ],
+  "vectorSearch": {
+    "algorithms": [{ "name": "knowledge-hnsw", "kind": "hnsw" }],
+    "profiles": [{ "name": "knowledge-vector", "algorithm": "knowledge-hnsw" }]
+  }
+}

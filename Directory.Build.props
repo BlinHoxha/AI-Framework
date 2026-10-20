@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Version>0.1.0</Version>
+    <Authors>AIFramework</Authors>
+    <Description>Independent reusable AI capabilities and optional provider adapters.</Description>
+  </PropertyGroup>
+</Project>

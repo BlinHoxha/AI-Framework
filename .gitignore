@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+.vs/
+.artifacts/
+TestResults/
+.env
+**/appsettings.Local.json
+*.user
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfplan

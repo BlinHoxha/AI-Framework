@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><ItemGroup><ProjectReference Include="../AIFramework.Core/AIFramework.Core.csproj" /><ProjectReference Include="../AIFramework.Contracts/AIFramework.Contracts.csproj" /><PackageReference Include="Microsoft.Extensions.DependencyInjection" /></ItemGroup></Project>

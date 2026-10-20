@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/AIFramework.Application/AIFramework.Application.csproj" />
+    <ProjectReference Include="../../src/AIFramework.Local/AIFramework.Local.csproj" />
+    <None Update="Documents/*.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+Synthetic demonstration document. No real company or personal data.
+Backup credentials must be rotated every thirty days.
+Administrators review the access log every evening.
