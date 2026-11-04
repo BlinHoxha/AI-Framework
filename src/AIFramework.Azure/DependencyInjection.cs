@@ -18,7 +18,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static void AddTransport(IServiceCollection services)
+    internal static void AddTransport(IServiceCollection services)
     {
         services.TryAddSingleton<TokenCredential>(_ => new DefaultAzureCredential());
         services.AddHttpClient<AzureTokenClient>(client => client.Timeout = TimeSpan.FromSeconds(60));

@@ -2,6 +2,11 @@
 
 Independent .NET AI libraries for document ingestion, scoped retrieval and source-grounded answers, with Local, Azure and AWS adapters. No dependency on Framework, MixPilot, BusinessSuite, ASP.NET Core in the core libraries, or a business-domain database.
 
+Structured generation is also available through a separate provider-neutral interface and
+an opt-in Azure adapter. It does not require retrieval/embeddings. See
+[structured generation](docs/STRUCTURED_GENERATION.md) for schema limits, registration and
+the distinction from existing Bedrock document-answer support.
+
 ## Libraries
 
 | Project | Responsibility |
@@ -93,7 +98,7 @@ Read [architecture and integration](docs/ARCHITECTURE.md). The host authenticate
 
 `Grounded=true` means evidence was retrieved and supplied to generation, not that each generated assertion was independently verified. Citations identify retrieved evidence, not necessarily every passage used by the model. `RequiresHumanReview` labels a profile and adds a notice; the consuming application must enforce actual approval. Uploaded text is untrusted; prompt instructions are only one layer of defense. No autonomous business tools, exports, filings or financial postings are executed.
 
-Ingestion currently accepts text and completes synchronously with a one-million-character library limit. HTTP hosting imposes its own body limits. Durable document metadata, idempotency, file upload/scanning, OCR implementations, deletion/reindex workflows, queues/outbox, usage budgets and telemetry exporters remain extensions. AWS retrieval/embeddings and provider-independent structured-output extraction are not implemented. `IDocumentTextExtractor` is an extension contract, not a working OCR service.
+Ingestion currently accepts text and completes synchronously with a one-million-character library limit. HTTP hosting imposes its own body limits. Durable document metadata, idempotency, file upload/scanning, OCR implementations, deletion/reindex workflows, queues/outbox, usage budgets and telemetry exporters remain extensions. AWS retrieval/embeddings and Bedrock structured generation are not implemented. The separate structured-generation interface has an Azure implementation; product extraction schemas remain application-owned. `IDocumentTextExtractor` is an extension contract, not a working OCR service.
 
 Cloud adapters are tested with simulated clients/HTTP responses. Live cloud access, costs, regional compatibility, deployment plans and real document evaluations require environment-specific verification.
 
