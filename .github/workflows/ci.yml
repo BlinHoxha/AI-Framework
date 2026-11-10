@@ -9,11 +9,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: |
+            9.0.x
+            10.0.x
       - run: dotnet restore AI-Framework.sln
       - run: dotnet build AI-Framework.sln --no-restore -c Release
       - run: dotnet test AI-Framework.sln --no-build --no-restore -c Release --logger trx
-      - run: dotnet run --project samples/AIFramework.LocalDemo --no-build --no-restore -c Release
+      - run: |
+          test -f src/AIFramework.Core/bin/Release/net9.0/AIFramework.Core.dll
+          test -f src/AIFramework.Core/bin/Release/net10.0/AIFramework.Core.dll
+      - run: dotnet run --project samples/AIFramework.LocalDemo --no-build --no-restore -c Release --framework net10.0
       - run: dotnet pack AI-Framework.sln --no-build --no-restore -c Release -o .artifacts/packages
       - uses: actions/upload-artifact@v4
         with:

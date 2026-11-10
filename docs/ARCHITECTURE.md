@@ -44,7 +44,7 @@ The Application layer rechecks returned chunks against tenant, profile, scope an
 
 ## Decisions and operational limits
 
-- Separate repository/solution and independently packable libraries; initial version 0.1.0, maintaining net9.0 compatibility with current consumers. Coordinate the planned LTS upgrade across repositories separately.
+- Separate repository/solution and independently packable libraries; initial version 0.1.0, targeting net9.0 and net10.0 with a .NET 10 SDK, or net9.0 only with a .NET 9 SDK. Removing net9.0 requires a separate coordinated decision.
 - Keep the existing tested Local/Azure behavior while adding AWS chat behind the same interface. Do not add heavyweight agent frameworks or vector/database products without a concrete use case.
 - Azure model and search registration are independently available. AWS chat can use application-owned evidence or a separately selected retrieval adapter.
 - Provider adapters manage transport and authentication, while the host owns approval, identity, budgets, data residency and business permissions. No unrestricted tool execution is supplied.

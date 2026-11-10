@@ -1,6 +1,10 @@
 <Project>
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0</TargetFrameworks>
+    <!-- NETCoreSdkVersion is unset here; MSBuildSDKsPath identifies the executing SDK. -->
+    <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals($([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName('$(MSBuildSDKsPath)')))), '10.0.100'))">net9.0;net10.0</TargetFrameworks>
+    <!-- Avoid build-time OpenAPI generation, which starts the sample host without auth settings. -->
+    <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Version>0.1.0</Version>

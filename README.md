@@ -22,7 +22,8 @@ the distinction from existing Bedrock document-answer support.
 
 ## Build and test
 
-Install the .NET 9 SDK matching the current consuming applications, then from this repository:
+The .NET 10 SDK builds net9.0 and net10.0; the .NET 9 SDK builds net9.0 only. From this repository:
+Running tests for both targets requires both the .NET 9 and .NET 10 runtimes.
 
 ```powershell
 dotnet restore AI-Framework.sln
@@ -31,14 +32,14 @@ dotnet test AI-Framework.sln --no-build --no-restore -c Release
 dotnet pack AI-Framework.sln --no-build --no-restore -c Release -o .artifacts/packages
 ```
 
-All six library projects are packable; sample/tests are not. Package version starts at `0.1.0`; override with `-p:Version=...` for an approved release. Publish packages only through your selected private feed. No license is assigned by the scaffold; choose licensing before distributing. Package versions are owned by this repository, never imported from Framework. Plan a coordinated .NET 10 LTS migration before .NET 9 support ends on 10 November 2026.
+All six library projects are packable; sample/tests are not. Package version starts at `0.1.0`; override with `-p:Version=...` for an approved release. Publish packages only through your selected private feed. No license is assigned by the scaffold; choose licensing before distributing. Package versions are owned by this repository, never imported from Framework. The libraries target net9.0 and net10.0; removing net9.0 is a separate coordinated decision.
 
 ## Use without a web server or database
 
 Run the complete synthetic document example:
 
 ```powershell
-dotnet run --project samples/AIFramework.LocalDemo
+dotnet run --project samples/AIFramework.LocalDemo --framework net9.0
 ```
 
 It demonstrates ingestion, scoped retrieval, source citations and denied-evidence
@@ -78,7 +79,7 @@ Here embeddings/search use Azure and chat uses Bedrock. Search consumes `ITextEm
 
 ```powershell
 $env:AI__AllowAnonymousDevelopment = 'true'
-dotnet run --project samples/AIFramework.SampleApi --launch-profile http
+dotnet run --project samples/AIFramework.SampleApi --launch-profile http --framework net9.0
 ```
 
 Swagger is at `http://localhost:5290/swagger`. Anonymous access requires that explicit setting **and** Development. Otherwise signed access tokens are required; the sample checks application `tenant_id` and optional `scope_id` claims. Outside Development configure `Authentication__Authority` and `Authentication__Audience`. Production use of the sample's Local/Aws ephemeral retrieval is rejected. Do not expose an anonymous demo publicly.

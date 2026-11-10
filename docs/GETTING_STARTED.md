@@ -5,10 +5,10 @@ migrations, seeded users, cloud resources or agent runtime are required.
 
 ## Run the standalone example
 
-From the AI-Framework repository with the .NET 9 SDK:
+From the AI-Framework repository with a .NET 10 SDK for net9.0 and net10.0, or a .NET 9 SDK for net9.0 only (net9.0 removal is a separate coordinated decision):
 
 ```powershell
-dotnet run --project samples/AIFramework.LocalDemo
+dotnet run --project samples/AIFramework.LocalDemo --framework net9.0
 ```
 
 The console example registers only Application and Local, loads two synthetic text
