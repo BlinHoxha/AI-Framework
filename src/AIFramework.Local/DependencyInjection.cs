@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddSingleton<IKnowledgeIndex>(p => p.GetRequiredService<InMemoryKnowledgeStore>());
         services.AddSingleton<IKnowledgeRetriever>(p => p.GetRequiredService<InMemoryKnowledgeStore>());
         services.AddSingleton<IChatModel, LocalGroundedChatModel>();
+        services.AddSingleton<ITextGenerationModel, LocalTextGenerationModel>();
         return services;
     }
 }

@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.TryAddSingleton<ITextChunker, FixedSizeTextChunker>();
         services.AddSingleton<AzureOpenAiClient>(p => new AzureOpenAiClient(options, p.GetRequiredService<AzureTokenClient>()));
         services.AddSingleton<IChatModel>(p => p.GetRequiredService<AzureOpenAiClient>());
+        services.AddSingleton<ITextGenerationModel>(p => p.GetRequiredService<AzureOpenAiClient>());
         services.AddSingleton<ITextEmbeddingModel>(p => p.GetRequiredService<AzureOpenAiClient>());
         return services;
     }

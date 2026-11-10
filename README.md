@@ -75,6 +75,16 @@ services.AddBedrockChat(new BedrockOptions("eu-central-1", permittedModelOrInfer
 
 Here embeddings/search use Azure and chat uses Bedrock. Search consumes `ITextEmbeddingModel`; its output dimensions must match the index. The last `IChatModel` registration selects chat. Register exactly one intended index/retriever/model per service collection; custom application-owned retrievers can replace the default. AWS uses the SDK credential chain; production should use workload roles. Bedrock requires a supported Converse model, regional access and scoped `bedrock:InvokeModel` permissions. Supply a model/inference-profile ID explicitly; no model is silently selected.
 
+For plain generation without evidence formatting, resolve `ITextGenerationModel` and call
+`GenerateTextAsync(new TextGenerationRequest(instructions, input, maxOutputTokens), cancellationToken)`.
+`AddAzureModels`, `AddBedrockChat` and `AddLocalAi` each register this interface. The last
+`ITextGenerationModel` registration wins, as with `IChatModel`; Azure and Bedrock share one
+adapter instance between the two interfaces. Instructions must contain 1–32,000 characters,
+input 1–200,000 characters (neither may be whitespace only), and `MaxOutputTokens` must be
+1–16,384 (default 1024). `TextGenerationResult.Complete` is false when Azure or Bedrock stops
+at the output limit; the returned text is partial. The Local implementation is a deterministic
+echo for development and testing, not a model.
+
 ## Sample API
 
 ```powershell

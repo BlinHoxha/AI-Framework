@@ -49,4 +49,5 @@ The Application layer rechecks returned chunks against tenant, profile, scope an
 - Azure model and search registration are independently available. AWS chat can use application-owned evidence or a separately selected retrieval adapter.
 - Provider adapters manage transport and authentication, while the host owns approval, identity, budgets, data residency and business permissions. No unrestricted tool execution is supplied.
 - Preserve observable limitations: synchronous text ingestion; local state is transient; Azure chunk writes can partially fail; no automatic delete/replace lifecycle or independent claim verification.
+- Generic `ITextGenerationModel` accepts instructions and input without retrieval; grounded `IChatModel` retains its evidence formatting, review notice and provider-specific system prompts.
 - Testing includes scoped sample HTTP workflows, cross-tenant retrieval, Azure request filters, Bedrock request/response behavior, and architecture contracts. Extend evaluations with permission leakage, source attribution, injection attempts and real corpus accuracy before production use.

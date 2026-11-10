@@ -29,6 +29,11 @@ public interface IChatModel
         CancellationToken cancellationToken);
 }
 
+public interface ITextGenerationModel
+{
+    Task<TextGenerationResult> GenerateTextAsync(TextGenerationRequest request, CancellationToken cancellationToken);
+}
+
 public interface ITextEmbeddingModel
 {
     Task<float[]> EmbedAsync(string text, CancellationToken cancellationToken);

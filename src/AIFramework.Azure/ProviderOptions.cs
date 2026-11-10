@@ -5,9 +5,10 @@ public sealed record AzureModelOptions(Uri OpenAiEndpoint, string ChatDeployment
     public void Validate()
     {
         if (!OpenAiEndpoint.IsAbsoluteUri || OpenAiEndpoint.Scheme != "https" ||
-            string.IsNullOrWhiteSpace(ChatDeployment) || string.IsNullOrWhiteSpace(EmbeddingDeployment) ||
-            ChatMaxOutputTokens is < 1 or > 16384)
+            string.IsNullOrWhiteSpace(ChatDeployment) || string.IsNullOrWhiteSpace(EmbeddingDeployment))
             throw new ArgumentException("Azure models require an HTTPS endpoint and chat/embedding deployments.");
+        if (ChatMaxOutputTokens is < 1 or > 16384)
+            throw new ArgumentException("ChatMaxOutputTokens must be between 1 and 16384.");
     }
 }
 public sealed record AzureSearchOptions(Uri SearchEndpoint, string SearchIndex)

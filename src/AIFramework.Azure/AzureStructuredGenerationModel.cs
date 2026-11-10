@@ -39,10 +39,8 @@ public sealed class AzureStructuredGenerationModel(AzureStructuredOptions option
         try
         {
             var root = response.RootElement;
-            string? model = root.TryGetProperty("model", out var modelValue) && modelValue.ValueKind == JsonValueKind.String
-                ? modelValue.GetString() : null;
-            int? Usage(string name) => root.TryGetProperty("usage", out var usage) && usage.TryGetProperty(name, out var count) && count.TryGetInt32(out int n) && n >= 0 ? n : null;
-            var tokens = new GenerationUsage(Usage("prompt_tokens"), Usage("completion_tokens"));
+            string? model = AzureResponseMetadata.GetModel(root);
+            var tokens = AzureResponseMetadata.GetStructuredUsage(root);
             var choices = root.GetProperty("choices");
             if (choices.GetArrayLength() != 1) throw new StructuredGenerationException("invalid_response");
             var choice = choices[0];
