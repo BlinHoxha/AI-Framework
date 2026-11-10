@@ -32,6 +32,9 @@ public interface IChatModel
 public interface ITextEmbeddingModel
 {
     Task<float[]> EmbedAsync(string text, CancellationToken cancellationToken);
+
+    async Task<EmbeddingResult> EmbedWithMetadataAsync(string text, CancellationToken cancellationToken)
+        => new(await EmbedAsync(text, cancellationToken), "unknown");
 }
 
 public interface IDocumentProfileCatalog

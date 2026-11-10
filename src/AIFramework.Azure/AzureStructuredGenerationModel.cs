@@ -39,6 +39,8 @@ public sealed class AzureStructuredGenerationModel(AzureStructuredOptions option
         try
         {
             var root = response.RootElement;
+            string? model = root.TryGetProperty("model", out var modelValue) && modelValue.ValueKind == JsonValueKind.String
+                ? modelValue.GetString() : null;
             int? Usage(string name) => root.TryGetProperty("usage", out var usage) && usage.TryGetProperty(name, out var count) && count.TryGetInt32(out int n) && n >= 0 ? n : null;
             var tokens = new GenerationUsage(Usage("prompt_tokens"), Usage("completion_tokens"));
             var choices = root.GetProperty("choices");
@@ -46,13 +48,13 @@ public sealed class AzureStructuredGenerationModel(AzureStructuredOptions option
             var choice = choices[0];
             var message = choice.GetProperty("message");
             if (message.TryGetProperty("refusal", out var refusal) && refusal.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(refusal.GetString()))
-                return new(StructuredGenerationStatus.Refused, null, "azure-openai", tokens);
+                return new(StructuredGenerationStatus.Refused, null, "azure-openai", tokens) { Model = model };
             if (choice.GetProperty("finish_reason").GetString() != "stop")
-                return new(StructuredGenerationStatus.Incomplete, null, "azure-openai", tokens);
+                return new(StructuredGenerationStatus.Incomplete, null, "azure-openai", tokens) { Model = model };
             string json = message.GetProperty("content").GetString() ?? "";
             using var output = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 32 });
             if (!StructuredJson.Matches(output.RootElement, request.Schema)) throw new StructuredGenerationException("invalid_response");
-            return new(StructuredGenerationStatus.Completed, json, "azure-openai", tokens);
+            return new(StructuredGenerationStatus.Completed, json, "azure-openai", tokens) { Model = model };
         }
         catch (Exception e) when (e is JsonException or KeyNotFoundException or InvalidOperationException)
         { throw new StructuredGenerationException("invalid_response"); }

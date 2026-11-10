@@ -32,7 +32,11 @@ public sealed class BedrockChatModel(IAmazonBedrockRuntime client, BedrockOption
         var answer = string.Join("\n", response.Output?.Message?.Content?.Where(c => c.Text is not null).Select(c => c.Text) ?? []);
         if (string.IsNullOrWhiteSpace(answer)) throw new InvalidOperationException("Bedrock returned no text answer.");
         if (request.Profile.RequiresHumanReview) answer += "\nHuman verification is required for this document profile.";
-        return new(answer, "aws-bedrock");
+        return new(answer, "aws-bedrock")
+        {
+            Model = options.ModelId,
+            Usage = response.Usage is { } usage ? new(usage.InputTokens, usage.OutputTokens) : null
+        };
     }
 }
 public static class DependencyInjection

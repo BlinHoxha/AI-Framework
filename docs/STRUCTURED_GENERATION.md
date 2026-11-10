@@ -7,6 +7,7 @@ The shared libraries contain no astronomy/product proposal types.
 system instructions, untrusted input, a schema name, a closed JSON schema and output-token cap.
 Results distinguish Completed, Refused and Incomplete; only Completed includes JSON.
 Provider/token-count metadata does not imply semantic correctness or monetary cost accounting.
+Azure structured results also include the response `Model` when the provider reports it.
 
 The initial adapter is `AzureStructuredGenerationModel`, registered using
 `services.AddAzureStructuredGeneration(new AzureStructuredOptions(endpoint, deployment))`.

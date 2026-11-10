@@ -7,7 +7,10 @@ public sealed record StructuredGenerationRequest(string SchemaName, string Instr
 public enum StructuredGenerationStatus { Completed, Refused, Incomplete }
 public sealed record GenerationUsage(int? InputTokens, int? OutputTokens);
 public sealed record StructuredGenerationResult(StructuredGenerationStatus Status,
-    string? OutputJson, string Provider, GenerationUsage Usage);
+    string? OutputJson, string Provider, GenerationUsage Usage)
+{
+    public string? Model { get; init; }
+}
 public sealed class StructuredGenerationException(string code) : Exception("Structured generation failed.")
 {
     public string Code { get; } = code;

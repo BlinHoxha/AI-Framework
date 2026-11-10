@@ -63,7 +63,7 @@ services.AddAiApplication();
 services.AddAzureAi(configuration);
 ```
 
-The configuration section is `AI:Azure`, with `OpenAiEndpoint`, `ChatDeployment`, `EmbeddingDeployment`, `SearchEndpoint` and `SearchIndex`. All endpoints must be HTTPS. Credentials use `DefaultAzureCredential`; override the registered `TokenCredential` when the host has a different identity strategy. Runtime HTTP clients use `IHttpClientFactory` with a 60-second timeout; no automatic ingestion retry policy is implied.
+The configuration section is `AI:Azure`, with `OpenAiEndpoint`, `ChatDeployment`, `EmbeddingDeployment`, `SearchEndpoint` and `SearchIndex`. All endpoints must be HTTPS. Credentials use `DefaultAzureCredential`; override the registered `TokenCredential` when the host has a different identity strategy. Runtime HTTP clients use `IHttpClientFactory` with a 60-second timeout; no automatic ingestion retry policy is implied. `AzureModelOptions.ChatMaxOutputTokens` defaults to 4096 and bounds chat output. A chat result's `Complete` is false if Azure stops at that limit; the answer text is still returned.
 
 Model generation and retrieval can also be selected independently:
 
@@ -99,7 +99,7 @@ Read [architecture and integration](docs/ARCHITECTURE.md). The host authenticate
 
 `Grounded=true` means evidence was retrieved and supplied to generation, not that each generated assertion was independently verified. Citations identify retrieved evidence, not necessarily every passage used by the model. `RequiresHumanReview` labels a profile and adds a notice; the consuming application must enforce actual approval. Uploaded text is untrusted; prompt instructions are only one layer of defense. No autonomous business tools, exports, filings or financial postings are executed.
 
-Ingestion currently accepts text and completes synchronously with a one-million-character library limit. HTTP hosting imposes its own body limits. Durable document metadata, idempotency, file upload/scanning, OCR implementations, deletion/reindex workflows, queues/outbox, usage budgets and telemetry exporters remain extensions. AWS retrieval/embeddings and Bedrock structured generation are not implemented. The separate structured-generation interface has an Azure implementation; product extraction schemas remain application-owned. `IDocumentTextExtractor` is an extension contract, not a working OCR service.
+Ingestion currently accepts text and completes synchronously with a one-million-character library limit. HTTP hosting imposes its own body limits. Durable document metadata, idempotency, file upload/scanning, OCR implementations, deletion/reindex workflows, queues/outbox, budgets and telemetry exporters remain extensions. Model results report provider, model and token `Usage` when the provider returns them; token counts are not monetary cost. AWS retrieval/embeddings and Bedrock structured generation are not implemented. The separate structured-generation interface has an Azure implementation; product extraction schemas remain application-owned. `IDocumentTextExtractor` is an extension contract, not a working OCR service.
 
 Cloud adapters are tested with simulated clients/HTTP responses. Live cloud access, costs, regional compatibility, deployment plans and real document evaluations require environment-specific verification.
 

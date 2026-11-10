@@ -30,6 +30,7 @@ public sealed class StructuredGenerationTests
         using var handler = new Handler(Reply("""{"scene":"Orion"}"""));
         var result = await Model(handler).GenerateStructuredAsync(Request, CancellationToken.None);
         Assert.Equal(StructuredGenerationStatus.Completed, result.Status);
+        Assert.Equal("structured-model", result.Model);
         Assert.Equal(12, result.Usage.InputTokens);
         using var sent = JsonDocument.Parse(handler.Body!);
         var format = sent.RootElement.GetProperty("response_format");
@@ -63,6 +64,7 @@ public sealed class StructuredGenerationTests
         using var handler = new Handler(Reply("partial", finish, refusal));
         var result = await Model(handler).GenerateStructuredAsync(Request, CancellationToken.None);
         Assert.Equal(status, result.Status);
+        Assert.Equal("structured-model", result.Model);
         Assert.Null(result.OutputJson);
     }
 
@@ -87,6 +89,7 @@ public sealed class StructuredGenerationTests
 
     private static string Reply(string content, string finish = "stop", string? refusal = null) => JsonSerializer.Serialize(new
     {
+        model = "structured-model",
         choices = new[] { new { finish_reason = finish, message = new { content, refusal } } },
         usage = new { prompt_tokens = 12, completion_tokens = 9 }
     });

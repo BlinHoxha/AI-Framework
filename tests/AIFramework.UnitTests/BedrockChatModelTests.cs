@@ -17,10 +17,21 @@ public sealed class BedrockChatModelTests
             [new("chunk", Guid.NewGuid(), 1, "Policy", "Review is Monday.", "legal", Guid.NewGuid(), null, "en", null)]), cancellation.Token);
         Assert.Contains("Human verification", result.Answer);
         Assert.Equal("aws-bedrock", result.Provider);
+        Assert.Equal("test-model", result.Model);
+        Assert.Null(result.Usage);
         Assert.Contains("Review is Monday", client.Request!.Messages[0].Content[0].Text);
         Assert.Equal(cancellation.Token, client.Cancellation);
     }
-    private sealed class StubClient() : AmazonBedrockRuntimeClient(new AnonymousAWSCredentials(), RegionEndpoint.EUCentral1)
+    [Fact]
+    public async Task Adapter_reports_provider_usage_when_present()
+    {
+        using var client = new StubClient(new TokenUsage { InputTokens = 11, OutputTokens = 7 });
+        var model = new BedrockChatModel(client, new("eu-central-1", "test-model"));
+        var result = await model.GenerateAsync(new("Question", new("general", "General", ["question-answering"], ["en"], false), []), CancellationToken.None);
+        Assert.Equal(new GenerationUsage(11, 7), result.Usage);
+        Assert.Equal("test-model", result.Model);
+    }
+    private sealed class StubClient(TokenUsage? usage = null) : AmazonBedrockRuntimeClient(new AnonymousAWSCredentials(), RegionEndpoint.EUCentral1)
     {
         public ConverseRequest? Request { get; private set; }
         public CancellationToken Cancellation { get; private set; }
@@ -28,6 +39,7 @@ public sealed class BedrockChatModelTests
         {
             Request = request; Cancellation = cancellationToken;
             return Task.FromResult(new ConverseResponse { StopReason = StopReason.End_turn,
+                Usage = usage,
                 Output = new ConverseOutput { Message = new Message { Role = ConversationRole.Assistant, Content = [new ContentBlock { Text = "Monday [1]." }] } } });
         }
     }

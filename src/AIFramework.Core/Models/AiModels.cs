@@ -35,7 +35,18 @@ public sealed record GroundedGenerationRequest(
     DocumentProfile Profile,
     IReadOnlyCollection<KnowledgeChunk> Context);
 
-public sealed record GroundedGenerationResult(string Answer, string Provider);
+public sealed record GroundedGenerationResult(string Answer, string Provider)
+{
+    public string? Model { get; init; }
+    public GenerationUsage? Usage { get; init; }
+    public bool Complete { get; init; } = true;
+}
+
+public sealed record EmbeddingResult(float[] Vector, string Provider)
+{
+    public string? Model { get; init; }
+    public GenerationUsage? Usage { get; init; }
+}
 
 public sealed record DocumentProfile(
     string Name,
