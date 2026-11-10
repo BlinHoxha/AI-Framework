@@ -85,6 +85,11 @@ input 1–200,000 characters (neither may be whitespace only), and `MaxOutputTok
 at the output limit; the returned text is partial. The Local implementation is a deterministic
 echo for development and testing, not a model.
 
+Opt-in text and structured generation metering is available through `MeteredTextGeneration`
+and `MeteredStructuredGeneration`. The host supplies explicit usage scope, versioned model
+prices and a budget ledger. See [metering](docs/METERING.md) for the reservation flow,
+estimated costs, telemetry limits and development-only in-memory ledger.
+
 ## Sample API
 
 ```powershell

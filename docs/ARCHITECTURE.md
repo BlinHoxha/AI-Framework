@@ -50,4 +50,5 @@ The Application layer rechecks returned chunks against tenant, profile, scope an
 - Provider adapters manage transport and authentication, while the host owns approval, identity, budgets, data residency and business permissions. No unrestricted tool execution is supplied.
 - Preserve observable limitations: synchronous text ingestion; local state is transient; Azure chunk writes can partially fail; no automatic delete/replace lifecycle or independent claim verification.
 - Generic `ITextGenerationModel` accepts instructions and input without retrieval; grounded `IChatModel` retains its evidence formatting, review notice and provider-specific system prompts.
+- Opt-in metered text and structured services reserve estimated cost through a host-supplied budget ledger; Core owns pure contracts/calculation, while Local supplies only a process-local test ledger.
 - Testing includes scoped sample HTTP workflows, cross-tenant retrieval, Azure request filters, Bedrock request/response behavior, and architecture contracts. Extend evaluations with permission leakage, source attribution, injection attempts and real corpus accuracy before production use.
