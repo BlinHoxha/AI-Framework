@@ -8,11 +8,13 @@ flowchart TD
     Host --> Local[AIFramework.Local]
     Host --> Azure[AIFramework.Azure]
     Host --> Aws[AIFramework.Aws]
+    Host --> Ollama[AIFramework.Ollama]
     Application --> Core[AIFramework.Core]
     Application --> Contracts[AIFramework.Contracts]
     Local --> Core
     Azure --> Core
     Aws --> Core
+    Ollama --> Core
 ```
 
 Core and Contracts use BCL types only. Application depends on DI abstractions and the two inner libraries, with no cloud, EF or ASP.NET dependency. Provider assemblies never reference each other. The sample composes libraries and demonstrates HTTP contracts but is never referenced by production libraries. Architecture tests enforce these assembly boundaries.
@@ -48,6 +50,7 @@ The Application layer rechecks returned chunks against tenant, profile, scope an
 - Keep the existing tested Local/Azure behavior while adding AWS chat behind the same interface. Do not add heavyweight agent frameworks or vector/database products without a concrete use case.
 - Azure model and search registration are independently available. AWS chat can use application-owned evidence or a separately selected retrieval adapter.
 - Provider adapters manage transport and authentication, while the host owns approval, identity, budgets, data residency and business permissions. No unrestricted tool execution is supplied.
+- Ollama is a separate Development-only loopback adapter for text and structured generation; the host explicitly selects it and owns model installation and capacity.
 - Preserve observable limitations: synchronous text ingestion; local state is transient; Azure chunk writes can partially fail; no automatic delete/replace lifecycle or independent claim verification.
 - Generic `ITextGenerationModel` accepts instructions and input without retrieval; grounded `IChatModel` retains its evidence formatting, review notice and provider-specific system prompts.
 - Opt-in metered text and structured services reserve estimated cost through a host-supplied budget ledger; Core owns pure contracts/calculation, while Local supplies only a process-local test ledger.

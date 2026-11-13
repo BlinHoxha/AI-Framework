@@ -17,6 +17,7 @@ the distinction from existing Bedrock document-answer support.
 | `AIFramework.Local` | Ephemeral in-memory retrieval and deterministic extractive answers for development/tests. |
 | `AIFramework.Azure` | Azure OpenAI chat/embeddings and Azure AI Search indexing/retrieval. |
 | `AIFramework.Aws` | Amazon Bedrock Converse text generation; independent of Azure and retrieval provider. |
+| `AIFramework.Ollama` | Development-only loopback text and structured generation through native Ollama chat. |
 | `AIFramework.LocalDemo` | Standalone console example with synthetic documents and scope checks; not a production library. |
 | `AIFramework.SampleApi` | Standalone example host, not a shared production API or identity service. |
 
@@ -89,6 +90,10 @@ Opt-in text and structured generation metering is available through `MeteredText
 and `MeteredStructuredGeneration`. The host supplies explicit usage scope, versioned model
 prices and a budget ledger. See [metering](docs/METERING.md) for the reservation flow,
 estimated costs, telemetry limits and development-only in-memory ledger.
+
+For local inference, `AddOllamaModels(new OllamaOptions(new Uri("http://127.0.0.1:11434/"), "qwen3:1.7b"))`
+registers text and structured generation. Use it only in Development and select it explicitly
+in the host. See [Ollama setup and limits](docs/OLLAMA.md).
 
 ## Sample API
 
